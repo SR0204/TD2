@@ -106,6 +106,8 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int) {
 
 	int haikeiGH = Novice::LoadTexture("./Resource/haikei.png");
 
+	int titleGH = Novice::LoadTexture("./Resource/title.png");
+
 	// キー入力結果を受け取る箱
 	char keys[256] = { 0 };
 	char preKeys[256] = { 0 };
@@ -128,7 +130,7 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int) {
 		{
 		case TITLE:
 
-
+			Novice::DrawSprite(0, 0, titleGH, 1.0f, 1.0f, 0.0f, WHITE);
 
 			//スペースキーを押すと...
 			if (preKeys[DIK_SPACE] == 0 && keys[DIK_SPACE] != 0 && isGameStart == false) {
