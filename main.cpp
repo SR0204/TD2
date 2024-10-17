@@ -95,6 +95,16 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int) {
 
 	int RuleGH = Novice::LoadTexture("./Resource/Rule.png");
 
+	int GameClearGH = Novice::LoadTexture("./Resource/GameClear.png");
+
+	int GameOverGH = Novice::LoadTexture("./Resource/GameOver.png");
+
+	int DrawGH = Novice::LoadTexture("./Resource/Draw.png");
+
+	int slashSE = Novice::LoadAudio("./Resource/slash.mp3");
+	int bgm = Novice::LoadAudio("./Resource/bgm.mp3");
+
+
 	// キー入力結果を受け取る箱
 	char keys[256] = { 0 };
 	char preKeys[256] = { 0 };
@@ -192,6 +202,8 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int) {
 
 			if (preKeys[DIK_SPACE] == 0 && keys[DIK_SPACE] != 0)
 			{
+				Novice::PlayAudio(bgm, true, 0.5f);
+
 				scene = PLAY;
 			}
 
@@ -248,6 +260,8 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int) {
 					if (preKeys[DIK_SPACE] == 0 && keys[DIK_SPACE] != 0) {
 						isSignalAppear = false;
 
+						//斬撃のSEを再生
+						Novice::PlayAudio(slashSE, false, 0.5f);
 
 					}
 
@@ -271,6 +285,9 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int) {
 				//フレームが最大値になったら
 				if (gameFrame == kMaxGameFrame)
 				{
+					//斬撃のSEを止める
+					Novice::StopAudio(slashSE);
+
 					//勝ち負けの判定
 					if (playerPressedFrame < enemyPressedFrame) {
 
@@ -298,6 +315,9 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int) {
 
 					}
 
+					//bgmを止める
+					Novice::StopAudio(bgm);
+
 					//ゲーム終了！
 					isGameStart = false;
 				}
@@ -320,12 +340,14 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int) {
 
 			break;
 		case GAMECLEAR:
-			Novice::DrawBox(0, 0, 750, 500, 0.0f, RED, kFillModeSolid);
+			//Novice::DrawBox(0, 0, 750, 500, 0.0f, RED, kFillModeSolid);
 
-			Novice::ScreenPrintf(280, 20, "your Frame[%4d]", playerPressedFrame);
+			Novice::ScreenPrintf(280, 200, "your Frame[%4d]", playerPressedFrame);
 
-			Novice::ScreenPrintf(280, 35, "enemy Frame[%4d]", enemyPressedFrame);
+			Novice::ScreenPrintf(280, 220, "enemy Frame[%4d]", enemyPressedFrame);
 
+			Novice::DrawSprite(0, 0, GameClearGH, 1.0f, 1.0f, 0.0f, WHITE);
+		
 			if (preKeys[DIK_SPACE] == 0 && keys[DIK_SPACE] != 0)
 			{
 
@@ -361,11 +383,14 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int) {
 
 			break;
 		case GAMEOVER:
-			Novice::DrawBox(0, 0, 750, 500, 0.0f, GREEN, kFillModeSolid);
+			//Novice::DrawBox(0, 0, 750, 500, 0.0f, GREEN, kFillModeSolid);
 
-			Novice::ScreenPrintf(280, 20, "your Frame[%4d]", playerPressedFrame);
+			Novice::ScreenPrintf(280, 200, "your Frame[%4d]", playerPressedFrame);
 
-			Novice::ScreenPrintf(280, 35, "enemy Frame[%4d]", enemyPressedFrame);
+			Novice::ScreenPrintf(280, 220, "enemy Frame[%4d]", enemyPressedFrame);
+
+			Novice::DrawSprite(0, 0, GameOverGH, 1.0f, 1.0f, 0.0f, WHITE);
+
 
 			if (preKeys[DIK_SPACE] == 0 && keys[DIK_SPACE] != 0)
 			{
@@ -408,7 +433,10 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int) {
 
 			Novice::ScreenPrintf(280, 35, "enemy Frame[%4d]", enemyPressedFrame);
 
-			Novice::DrawBox(0, 0, 750, 500, 0.0f, BLUE, kFillModeSolid);
+			//Novice::DrawBox(0, 0, 750, 500, 0.0f, BLUE, kFillModeSolid);
+
+			Novice::DrawSprite(0, 0, DrawGH, 1.0f, 1.0f, 0.0f, WHITE);
+
 			if (preKeys[DIK_SPACE] == 0 && keys[DIK_SPACE] != 0)
 			{
 
