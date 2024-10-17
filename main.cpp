@@ -93,6 +93,8 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int) {
 
 	float EnemyRad = 50;
 
+	int RuleGH = Novice::LoadTexture("./Resource/Rule.png");
+
 	// キー入力結果を受け取る箱
 	char keys[256] = { 0 };
 	char preKeys[256] = { 0 };
@@ -114,6 +116,31 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int) {
 		switch (scene)
 		{
 		case TITLE:
+
+
+
+			//スペースキーを押すと...
+			if (preKeys[DIK_SPACE] == 0 && keys[DIK_SPACE] != 0 && isGameStart == false) {
+				//ゲーム開始
+				isGameStart = true;
+
+
+				//srand(currentTime);
+
+				//合図が出るフレームを決定
+				signalAppearFrame = rand() % 60 + 420;
+
+
+				//偽合図が出るフレームを決定
+				//fakeSignalAppearFrame = rand() % 60 + 300;//ノーマル
+
+
+				scene = RULE;
+			}
+			break;
+
+		case RULE:
+			//Novice::DrawBox(0, 0, 750, 500, 0.0f, BLACK, kFillModeSolid);
 
 			if (preKeys[DIK_1] == 0 && keys[DIK_1] != 0) {
 
@@ -138,63 +165,38 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int) {
 
 			Novice::ScreenPrintf(0, 0, "モード %d", gameDifficult);
 
-			//スペースキーを押すと...
-			if (preKeys[DIK_SPACE] == 0 && keys[DIK_SPACE] != 0 && isGameStart == false) {
-				//ゲーム開始
-				isGameStart = true;
+			switch (gameDifficult)
+			{
+			case easy:
 
+				//敵が押すフレームを決定
+				enemyPressedFrame = rand() % 31 + 30;
 
-				//srand(currentTime);
+				break;
+			case normal:
 
-				//合図が出るフレームを決定
-				signalAppearFrame = rand() % 60 + 420;
+				//敵が押すフレームを決定
+				enemyPressedFrame = rand() % 5 + 13;
 
+				break;
+			case pro:
 
-				//偽合図が出るフレームを決定
-				//fakeSignalAppearFrame = rand() % 60 + 300;//ノーマル
+				//敵が押すフレームを決定
+				enemyPressedFrame = rand() % 7 + 7;
 
+				break;
 
-
-
-				switch (gameDifficult)
-				{
-				case easy:
-
-					//敵が押すフレームを決定
-					enemyPressedFrame = rand() % 4 + 15;
-
-					break;
-				case normal:
-
-					//敵が押すフレームを決定
-					enemyPressedFrame = rand() % 4 + 12;
-
-					break;
-				case pro:
-
-					//敵が押すフレームを決定
-					enemyPressedFrame = rand() % 6 + 7;
-
-					break;
-
-				}
-
-
-				scene = RULE;
 			}
-			break;
-		case RULE:
-			Novice::DrawBox(0, 0, 750, 500, 0.0f, BLACK, kFillModeSolid);
+
+			Novice::DrawSprite(0, 0, (int)RuleGH, 1.0f, 1.0f, 0.0f, WHITE);
 
 			if (preKeys[DIK_SPACE] == 0 && keys[DIK_SPACE] != 0)
 			{
-
-
-
 				scene = PLAY;
 			}
 
 			break;
+
 		case PLAY:
 
 			Novice::ScreenPrintf(280, 20, "your Frame[%4d]", playerPressedFrame);
@@ -319,6 +321,11 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int) {
 			break;
 		case GAMECLEAR:
 			Novice::DrawBox(0, 0, 750, 500, 0.0f, RED, kFillModeSolid);
+
+			Novice::ScreenPrintf(280, 20, "your Frame[%4d]", playerPressedFrame);
+
+			Novice::ScreenPrintf(280, 35, "enemy Frame[%4d]", enemyPressedFrame);
+
 			if (preKeys[DIK_SPACE] == 0 && keys[DIK_SPACE] != 0)
 			{
 
@@ -355,6 +362,11 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int) {
 			break;
 		case GAMEOVER:
 			Novice::DrawBox(0, 0, 750, 500, 0.0f, GREEN, kFillModeSolid);
+
+			Novice::ScreenPrintf(280, 20, "your Frame[%4d]", playerPressedFrame);
+
+			Novice::ScreenPrintf(280, 35, "enemy Frame[%4d]", enemyPressedFrame);
+
 			if (preKeys[DIK_SPACE] == 0 && keys[DIK_SPACE] != 0)
 			{
 
@@ -392,8 +404,11 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int) {
 			break;
 
 		case DRAW:
+			Novice::ScreenPrintf(280, 20, "your Frame[%4d]", playerPressedFrame);
 
-			Novice::DrawBox(0, 0, 750, 500, 0.0f, RED, kFillModeSolid);
+			Novice::ScreenPrintf(280, 35, "enemy Frame[%4d]", enemyPressedFrame);
+
+			Novice::DrawBox(0, 0, 750, 500, 0.0f, BLUE, kFillModeSolid);
 			if (preKeys[DIK_SPACE] == 0 && keys[DIK_SPACE] != 0)
 			{
 
