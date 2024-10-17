@@ -1,7 +1,8 @@
 #include <Novice.h>
 #include <time.h>
+#include"Vector2.h"
 
-const char kWindowTitle[] = "LE2C_12_スズキ_レオ";
+const char kWindowTitle[] = "見切り";
 
 // Windowsアプリでのエントリーポイント(main関数)
 int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int) {
@@ -12,10 +13,31 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int) {
 	// ライブラリの初期化
 	Novice::Initialize(kWindowTitle, windowSizeX, windowSizeY);
 
-	// キー入力結果を受け取る箱
-	char keys[256] = {0};
-	char preKeys[256] = {0};
 
+	enum GameScene {
+
+		TITLE,
+		RULE,
+		PLAY,
+		GAMECLEAR,
+		GAMEOVER,
+		DRAW
+	};
+
+	GameScene scene = TITLE;
+
+
+	//難易度
+	enum GameDifiicult {
+		easy,
+		normal,
+		pro
+	};
+
+
+
+
+	GameDifiicult gameDifficult = normal;
 
 
 	//乱数の初期化
@@ -27,7 +49,11 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int) {
 	//ゲームのフレーム
 	int gameFrame = 0;
 	//ゲームが終わるフレーム
-	const int kMaxGameFrame = 60 * 12;
+	const int kMaxGameFrame = 60 * 10;
+
+	//ゲームの延長
+	//int EndGameFrame = 60 * 12;
+
 	//合図が出るフレーム
 	int signalAppearFrame = 0;
 	//合図が出ているか
@@ -45,8 +71,31 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int) {
 	//敵がキーを押したフレーム
 	int enemyPressedFrame = 0;
 
-	
-	int black = 0x00000000;
+
+	//プレイヤー
+	Vector2 PlayerPosition{
+
+		PlayerPosition.x = 100,
+		PlayerPosition.y = 400,
+
+	};
+
+	float PlayerRad = 50;
+
+
+	//敵
+	Vector2 EnemyPosition{
+
+		EnemyPosition.x = 600,
+		EnemyPosition.y = 400,
+
+	};
+
+	float EnemyRad = 50;
+
+	// キー入力結果を受け取る箱
+	char keys[256] = { 0 };
+	char preKeys[256] = { 0 };
 
 	// ウィンドウの×ボタンが押されるまでループ
 	while (Novice::ProcessMessage() == 0) {
@@ -62,67 +111,320 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int) {
 		///
 
 
-		//スペースキーを押すと...
-		if (preKeys[DIK_SPACE] == 0 && keys[DIK_SPACE] != 0 && isGameStart == false) {
-			//ゲーム開始
-			isGameStart = true;
+		switch (scene)
+		{
+		case TITLE:
 
-			//合図が出るフレームを決定
-			signalAppearFrame = rand() % 60 + 420;
-			//偽合図が出るフレームを決定
-			fakeSignalAppearFrame = rand() % 60 + 300;
+			if (preKeys[DIK_1] == 0 && keys[DIK_1] != 0) {
 
-			//敵が押すフレームを決定
-			enemyPressedFrame = rand() % 10 + 10;
-		}
-
-		//ゲーム中に...
-		if (isGameStart == true) {
-
-			//ゲーム中はフレームを加算し続ける
-			gameFrame++;
-
-			//ゲームのフレームが合図を出すフレームになったら...
-			if (gameFrame == signalAppearFrame) {
-				//合図が出ているフラグをtrueに
-				isSignalAppear = true;
+				gameDifficult = easy;
 			}
 
-			//合図が出ている間...
-			if (isSignalAppear == true) {
-				//プレイヤーが押すまでのフレームを加算
-				playerPressedFrame++;
+			if (preKeys[DIK_2] == 0 && keys[DIK_2] != 0) {
 
-				//キーを押したら合図を消す＆押した瞬間のフレームを決定！
-				if (preKeys[DIK_SPACE] == 0 && keys[DIK_SPACE] != 0) {
-					isSignalAppear = false;
+				gameDifficult = normal;
 
+				//偽合図が出るフレームを決定
+				fakeSignalAppearFrame = rand() % 60 + 300;//ノーマル
+			}
+
+			if (preKeys[DIK_3] == 0 && keys[DIK_3] != 0) {
+
+				gameDifficult = pro;
+
+				//偽合図が出るフレームを決定
+				fakeSignalAppearFrame = rand() % 30 + 390;//ハード
+			}
+
+			Novice::ScreenPrintf(0, 0, "モード %d", gameDifficult);
+
+			//スペースキーを押すと...
+			if (preKeys[DIK_SPACE] == 0 && keys[DIK_SPACE] != 0 && isGameStart == false) {
+				//ゲーム開始
+				isGameStart = true;
+
+
+				//srand(currentTime);
+
+				//合図が出るフレームを決定
+				signalAppearFrame = rand() % 60 + 420;
+
+
+				//偽合図が出るフレームを決定
+				//fakeSignalAppearFrame = rand() % 60 + 300;//ノーマル
+
+
+
+
+				switch (gameDifficult)
+				{
+				case easy:
+
+					//敵が押すフレームを決定
+					enemyPressedFrame = rand() % 4 + 15;
+
+					break;
+				case normal:
+
+					//敵が押すフレームを決定
+					enemyPressedFrame = rand() % 4 + 12;
+
+					break;
+				case pro:
+
+					//敵が押すフレームを決定
+					enemyPressedFrame = rand() % 6 + 7;
+
+					break;
+
+				}
+
+
+				scene = RULE;
+			}
+			break;
+		case RULE:
+			Novice::DrawBox(0, 0, 750, 500, 0.0f, BLACK, kFillModeSolid);
+
+			if (preKeys[DIK_SPACE] == 0 && keys[DIK_SPACE] != 0)
+			{
+
+
+
+				scene = PLAY;
+			}
+
+			break;
+		case PLAY:
+
+			Novice::ScreenPrintf(280, 20, "your Frame[%4d]", playerPressedFrame);
+
+			if (isGameStart == true) {
+				//合図
+				if (gameFrame >= signalAppearFrame && gameFrame <= signalAppearFrame + 6) {
+					Novice::DrawBox(0, 0, windowSizeX, windowSizeY, 0.0f, 0xFFFFFFFF, kFillModeSolid);
+				}
+
+				//偽の合図
+				if (gameDifficult == normal || gameDifficult == pro) {
+					if (gameFrame >= fakeSignalAppearFrame && gameFrame <= fakeSignalAppearFrame + 6) {
+						Novice::DrawBox(0, 0, windowSizeX, windowSizeY, 0.0f, RED, kFillModeSolid);
+					}
+				}
+
+
+				//勝ち負けの判定
+				/*if (isPlayerWin == true) {
+					Novice::DrawEllipse(400, 400, 40, 40, 0.0f, RED, kFillModeSolid);
+				}
+				if (isPlayerLose == true) {
+					Novice::DrawEllipse(400, 400, 40, 40, 0.0f, BLUE, kFillModeSolid);
+				}
+				if (isPlayerDraw == true) {
+					Novice::DrawEllipse(400, 400, 40, 40, 0.0f, WHITE, kFillModeSolid);
+				}*/
+			}
+
+			//ゲーム中に...
+			if (isGameStart == true) {
+
+				//ゲーム中はフレームを加算し続ける
+				gameFrame++;
+
+				//ゲームのフレームが合図を出すフレームになったら...
+				if (gameFrame == signalAppearFrame) {
+					//合図が出ているフラグをtrueに
+					isSignalAppear = true;
+				}
+
+				//合図が出ている間...
+				if (isSignalAppear == true) {
+					//プレイヤーが押すまでのフレームを加算
+					playerPressedFrame++;
+
+					//キーを押したら合図を消す＆押した瞬間のフレームを決定！
+					if (preKeys[DIK_SPACE] == 0 && keys[DIK_SPACE] != 0) {
+						isSignalAppear = false;
+
+
+					}
+
+
+				}
+				else if (isSignalAppear == false && preKeys[DIK_SPACE] == 0 && keys[DIK_SPACE] != 0)
+				{
+					scene = GAMEOVER;
+				}
+
+
+
+
+				//プレイヤー
+				Novice::DrawEllipse((int)PlayerPosition.x, (int)PlayerPosition.y, (int)PlayerRad, (int)PlayerRad, 0.0f, WHITE, kFillModeSolid);
+
+				//敵
+				Novice::DrawEllipse((int)EnemyPosition.x, (int)EnemyPosition.y, (int)EnemyRad, (int)EnemyRad, 0.0f, BLUE, kFillModeSolid);
+
+
+				//フレームが最大値になったら
+				if (gameFrame == kMaxGameFrame)
+				{
 					//勝ち負けの判定
 					if (playerPressedFrame < enemyPressedFrame) {
+
 						isPlayerWin = true;
 						isPlayerLose = false;
 						isPlayerDraw = false;
+
+						scene = GAMECLEAR;
+
 					}
 					else if (playerPressedFrame > enemyPressedFrame) {
 						isPlayerWin = false;
 						isPlayerLose = true;
 						isPlayerDraw = false;
+
+						scene = GAMEOVER;
+
 					}
 					else if (playerPressedFrame == enemyPressedFrame) {
 						isPlayerWin = false;
 						isPlayerLose = false;
 						isPlayerDraw = true;
+
+						scene = DRAW;
+
 					}
+
+					//ゲーム終了！
+					isGameStart = false;
 				}
+
 			}
 
-			//フレームが最大値になったら
-			if (gameFrame == kMaxGameFrame)
+
+			/*if (gameFrame > kMaxGameFrame) {
+
+				gameFrame++;
+
+				if (gameFrame == EndGameFrame) {
+
+
+
+				}
+			}*/
+
+
+
+			break;
+		case GAMECLEAR:
+			Novice::DrawBox(0, 0, 750, 500, 0.0f, RED, kFillModeSolid);
+			if (preKeys[DIK_SPACE] == 0 && keys[DIK_SPACE] != 0)
 			{
-				//ゲーム終了！
+
+
+
+
+				//ゲームが始まったか
 				isGameStart = false;
+				//ゲームのフレーム
+				gameFrame = 0;
+
+				//合図が出るフレーム
+				signalAppearFrame = 0;
+				//合図が出ているか
+				isSignalAppear = false;
+				//偽の合図が出るフレーム
+				fakeSignalAppearFrame = 0;
+
+				//勝ち負けのフラグ
+				isPlayerWin = false;
+				isPlayerLose = false;
+				isPlayerDraw = false;
+
+				//プレイヤーがキーを押したフレーム
+				playerPressedFrame = 0;
+				//敵がキーを押したフレーム
+				enemyPressedFrame = 0;
+
+
+				scene = TITLE;
 			}
+
+
+			break;
+		case GAMEOVER:
+			Novice::DrawBox(0, 0, 750, 500, 0.0f, GREEN, kFillModeSolid);
+			if (preKeys[DIK_SPACE] == 0 && keys[DIK_SPACE] != 0)
+			{
+
+
+
+				//ゲームが始まったか
+				isGameStart = false;
+				//ゲームのフレーム
+				gameFrame = 0;
+
+				//合図が出るフレーム
+				signalAppearFrame = 0;
+				//合図が出ているか
+				isSignalAppear = false;
+				//偽の合図が出るフレーム
+				fakeSignalAppearFrame = 0;
+
+				//勝ち負けのフラグ
+				isPlayerWin = false;
+				isPlayerLose = false;
+				isPlayerDraw = false;
+
+				//プレイヤーがキーを押したフレーム
+				playerPressedFrame = 0;
+				//敵がキーを押したフレーム
+				enemyPressedFrame = 0;
+
+
+
+				scene = TITLE;
+
+			}
+
+
+			break;
+
+		case DRAW:
+
+			Novice::DrawBox(0, 0, 750, 500, 0.0f, RED, kFillModeSolid);
+			if (preKeys[DIK_SPACE] == 0 && keys[DIK_SPACE] != 0)
+			{
+
+				//ゲームが始まったか
+				isGameStart = false;
+				//ゲームのフレーム
+				gameFrame = 0;
+
+				//合図が出るフレーム
+				signalAppearFrame = 0;
+				//合図が出ているか
+				isSignalAppear = false;
+				//偽の合図が出るフレーム
+				fakeSignalAppearFrame = 0;
+
+				//勝ち負けのフラグ
+				isPlayerWin = false;
+				isPlayerLose = false;
+				isPlayerDraw = false;
+
+				//プレイヤーがキーを押したフレーム
+				playerPressedFrame = 0;
+				//敵がキーを押したフレーム
+				enemyPressedFrame = 0;
+
+				scene = TITLE;
+
+			}
+
 		}
+
 
 		///
 		/// ↑更新処理ここまで
@@ -132,36 +434,9 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int) {
 		/// ↓描画処理ここから
 		///
 
-		Novice::DrawBox(0, 0, windowSizeX, windowSizeY, 0.0f, black, kFillModeSolid);
+		//Novice::ScreenPrintf(0, 0, "GameStart[%d] Frame[%4d] SignalFrame[%4d] SignalAppear[%d] FakeSignalFrame[%4d]", isGameStart, gameFrame, signalAppearFrame, isSignalAppear, fakeSignalAppearFrame);
 
-		Novice::ScreenPrintf(0, 0, "GameStart[%d] Frame[%4d] SignalFrame[%4d] SignalAppear[%d] FakeSignalFrame[%4d]", isGameStart, gameFrame, signalAppearFrame, isSignalAppear, fakeSignalAppearFrame);
-		Novice::ScreenPrintf(0, 20, "PlayerPressedFrame[%4d] EnemyPressedFrame[%4d]", playerPressedFrame, enemyPressedFrame);
-		Novice::ScreenPrintf(0, 40, "win[%d] lose[%d] draw[%d]", isPlayerWin, isPlayerLose, isPlayerDraw);
-
-		if (isGameStart == true) {
-			//合図
-			if (gameFrame >= signalAppearFrame && gameFrame <= signalAppearFrame + 6) {
-				Novice::DrawBox(0, 0, windowSizeX, windowSizeY, 0.0f, 0xFFFFFFFF, kFillModeSolid);
-			}
-
-			//偽の合図
-			if (gameFrame >= fakeSignalAppearFrame && gameFrame <= fakeSignalAppearFrame + 6) {
-				Novice::DrawBox(0, 0, windowSizeX, windowSizeY, 0.0f, 0xFFFFFF11, kFillModeSolid);
-			}
-
-			//勝ち負けの判定
-			if (isPlayerWin == true) {
-				Novice::DrawEllipse(400, 400, 40, 40, 0.0f, RED, kFillModeSolid);
-			}
-			if (isPlayerLose == true) {
-				Novice::DrawEllipse(400, 400, 40, 40, 0.0f, BLUE, kFillModeSolid);
-			}
-			if (isPlayerDraw == true) {
-				Novice::DrawEllipse(400, 400, 40, 40, 0.0f, WHITE, kFillModeSolid);
-			}
-		}
-
-
+		//Novice::ScreenPrintf(0, 40, "win[%d] lose[%d] draw[%d]", isPlayerWin, isPlayerLose, isPlayerDraw);
 
 		///
 		/// ↑描画処理ここまで
