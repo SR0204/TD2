@@ -96,6 +96,7 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int) {
 	int RuleGH = Novice::LoadTexture("./Resource/Rule.png");
 	
 	int slashSE = Novice::LoadAudio("./Resource/slash.mp3");
+	int bgm = Novice::LoadAudio("./Resource/bgm.mp3");
 
 	// キー入力結果を受け取る箱
 	char keys[256] = { 0 };
@@ -114,7 +115,7 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int) {
 		/// ↓更新処理ここから
 		///
 
-
+		
 		switch (scene)
 		{
 		case TITLE:
@@ -194,6 +195,7 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int) {
 
 			if (preKeys[DIK_SPACE] == 0 && keys[DIK_SPACE] != 0)
 			{
+				Novice::PlayAudio(bgm, true, 0.5f);
 				scene = PLAY;
 			}
 
@@ -303,6 +305,9 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int) {
 						scene = DRAW;
 
 					}
+
+					//bgmを止める
+					Novice::StopAudio(bgm);
 
 					//ゲーム終了！
 					isGameStart = false;
@@ -445,8 +450,6 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int) {
 			}
 
 		}
-
-
 		///
 		/// ↑更新処理ここまで
 		///
