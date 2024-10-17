@@ -104,6 +104,7 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int) {
 	int slashSE = Novice::LoadAudio("./Resource/slash.mp3");
 	int bgm = Novice::LoadAudio("./Resource/bgm.mp3");
 
+	int haikeiGH = Novice::LoadTexture("./Resource/haikei.png");
 
 	// キー入力結果を受け取る箱
 	char keys[256] = { 0 };
@@ -122,7 +123,7 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int) {
 		/// ↓更新処理ここから
 		///
 
-		
+
 		switch (scene)
 		{
 		case TITLE:
@@ -212,6 +213,8 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int) {
 		case PLAY:
 
 			Novice::ScreenPrintf(280, 20, "your Frame[%4d]", playerPressedFrame);
+
+			Novice::DrawSprite(0, 0, haikeiGH, 1.0f, 1.0f, 0.0f, WHITE);
 
 			if (isGameStart == true) {
 				//合図
@@ -347,7 +350,7 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int) {
 			Novice::ScreenPrintf(280, 220, "enemy Frame[%4d]", enemyPressedFrame);
 
 			Novice::DrawSprite(0, 0, GameClearGH, 1.0f, 1.0f, 0.0f, WHITE);
-		
+
 			if (preKeys[DIK_SPACE] == 0 && keys[DIK_SPACE] != 0)
 			{
 
