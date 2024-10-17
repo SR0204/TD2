@@ -161,7 +161,7 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int) {
 				case easy:
 
 					//敵が押すフレームを決定
-					enemyPressedFrame = rand() % 4 + 15;
+					enemyPressedFrame = rand() % 31 + 30;
 
 					break;
 				case normal:
@@ -174,6 +174,7 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int) {
 
 					//敵が押すフレームを決定
 					enemyPressedFrame = rand() % 6 + 7;
+
 
 					break;
 
