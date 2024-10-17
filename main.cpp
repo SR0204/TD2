@@ -2,7 +2,7 @@
 #include <time.h>
 #include"Vector2.h"
 
-const char kWindowTitle[] = "見切り";
+const char kWindowTitle[] = "正解を見切れ！！";
 
 // Windowsアプリでのエントリーポイント(main関数)
 int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int) {
