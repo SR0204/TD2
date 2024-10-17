@@ -45,7 +45,8 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int) {
 	//敵がキーを押したフレーム
 	int enemyPressedFrame = 0;
 
-
+	
+	int black = 0x00000000;
 
 	// ウィンドウの×ボタンが押されるまでループ
 	while (Novice::ProcessMessage() == 0) {
@@ -59,8 +60,9 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int) {
 		///
 		/// ↓更新処理ここから
 		///
-		
-//スペースキーを押すと...
+
+
+		//スペースキーを押すと...
 		if (preKeys[DIK_SPACE] == 0 && keys[DIK_SPACE] != 0 && isGameStart == false) {
 			//ゲーム開始
 			isGameStart = true;
@@ -130,6 +132,7 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int) {
 		/// ↓描画処理ここから
 		///
 
+		Novice::DrawBox(0, 0, windowSizeX, windowSizeY, 0.0f, black, kFillModeSolid);
 
 		Novice::ScreenPrintf(0, 0, "GameStart[%d] Frame[%4d] SignalFrame[%4d] SignalAppear[%d] FakeSignalFrame[%4d]", isGameStart, gameFrame, signalAppearFrame, isSignalAppear, fakeSignalAppearFrame);
 		Novice::ScreenPrintf(0, 20, "PlayerPressedFrame[%4d] EnemyPressedFrame[%4d]", playerPressedFrame, enemyPressedFrame);
