@@ -18,6 +18,7 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int) {
 
 		TITLE,
 		RULE,
+		RULE2,
 		PLAY,
 		GAMECLEAR,
 		GAMEOVER,
@@ -80,7 +81,7 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int) {
 
 	};
 
-	float PlayerRad = 50;
+	//float PlayerRad = 50;
 
 
 	//敵
@@ -91,9 +92,10 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int) {
 
 	};
 
-	float EnemyRad = 50;
+	//float EnemyRad = 50;
 
 	int RuleGH = Novice::LoadTexture("./Resource/Rule.png");
+	int Rule2GH = Novice::LoadTexture("./Resource/Rule2.png");
 
 	int GameClearGH = Novice::LoadTexture("./Resource/GameClear.png");
 
@@ -107,6 +109,17 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int) {
 	int haikeiGH = Novice::LoadTexture("./Resource/haikei.png");
 
 	int titleGH = Novice::LoadTexture("./Resource/title.png");
+
+	//float PlayerFrame = 0.0f;
+	//int EnemyFrame = 0.0f;
+
+	int PlayerGH1 = Novice::LoadTexture("./Resource/player7.png");
+	int PlayerGH2 = Novice::LoadTexture("./Resource/player3.png");
+
+
+	/*int EnemyGH1 = Novice::LoadTexture("./Resource/enemy1.png");
+	int EnemyGH2 = Novice::LoadTexture("./Resource/enemy7.png");
+	int EnemyGH3 = Novice::LoadTexture("./Resource/enemy8.png");*/
 
 	// キー入力結果を受け取る箱
 	char keys[256] = { 0 };
@@ -155,6 +168,30 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int) {
 		case RULE:
 			//Novice::DrawBox(0, 0, 750, 500, 0.0f, BLACK, kFillModeSolid);
 
+
+
+			Novice::DrawSprite(0, 0, (int)RuleGH, 1.0f, 1.0f, 0.0f, WHITE);
+
+
+
+
+
+			if (preKeys[DIK_SPACE] == 0 && keys[DIK_SPACE] != 0)
+			{
+
+
+				scene = RULE2;
+			}
+
+
+
+
+			break;
+
+
+
+		case RULE2:
+
 			if (preKeys[DIK_1] == 0 && keys[DIK_1] != 0) {
 
 				gameDifficult = easy;
@@ -201,7 +238,7 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int) {
 
 			}
 
-			Novice::DrawSprite(0, 0, (int)RuleGH, 1.0f, 1.0f, 0.0f, WHITE);
+			Novice::DrawSprite(0, 0, (int)Rule2GH, 1.0f, 1.0f, 0.0f, WHITE);
 
 			if (preKeys[DIK_SPACE] == 0 && keys[DIK_SPACE] != 0)
 			{
@@ -217,6 +254,9 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int) {
 			Novice::ScreenPrintf(280, 20, "your Frame[%4d]", playerPressedFrame);
 
 			Novice::DrawSprite(0, 0, haikeiGH, 1.0f, 1.0f, 0.0f, WHITE);
+
+			//プレイヤー
+			Novice::DrawSprite((int)150.0f, (int)300.0f, PlayerGH1, 3.0f, 3.0f, 0.0f, WHITE);
 
 			if (isGameStart == true) {
 				//合図
@@ -265,6 +305,11 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int) {
 					if (preKeys[DIK_SPACE] == 0 && keys[DIK_SPACE] != 0) {
 						isSignalAppear = false;
 
+						
+						//プレイヤー
+						Novice::DrawSprite((int)500.0f, (int)300.0f, PlayerGH2, 3.0f, 3.0f, 0.0f, WHITE);
+
+
 						//斬撃のSEを再生
 						Novice::PlayAudio(slashSE, false, 0.5f);
 
@@ -281,10 +326,12 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int) {
 
 
 				//プレイヤー
-				Novice::DrawEllipse((int)PlayerPosition.x, (int)PlayerPosition.y, (int)PlayerRad, (int)PlayerRad, 0.0f, WHITE, kFillModeSolid);
+				//Novice::DrawEllipse((int)PlayerPosition.x, (int)PlayerPosition.y, (int)PlayerRad, (int)PlayerRad, 0.0f, WHITE, kFillModeSolid);
+
+				
 
 				//敵
-				Novice::DrawEllipse((int)EnemyPosition.x, (int)EnemyPosition.y, (int)EnemyRad, (int)EnemyRad, 0.0f, BLUE, kFillModeSolid);
+				//Novice::DrawEllipse((int)EnemyPosition.x, (int)EnemyPosition.y, (int)EnemyRad, (int)EnemyRad, 0.0f, BLUE, kFillModeSolid);
 
 
 				//フレームが最大値になったら
