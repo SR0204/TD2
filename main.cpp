@@ -292,6 +292,8 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int) {
 				{
 					//斬撃のSEを止める
 					Novice::StopAudio(slashSE);
+					//bgmを止める
+					Novice::StopAudio(bgm);
 
 					//勝ち負けの判定
 					if (playerPressedFrame < enemyPressedFrame) {
@@ -319,9 +321,6 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int) {
 						scene = DRAW;
 
 					}
-
-					//bgmを止める
-					Novice::StopAudio(bgm);
 
 					//ゲーム終了！
 					isGameStart = false;
