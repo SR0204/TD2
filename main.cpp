@@ -116,10 +116,10 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int) {
 	int PlayerGH1 = Novice::LoadTexture("./Resource/player7.png");
 	int PlayerGH2 = Novice::LoadTexture("./Resource/player3.png");
 
+	bool ghSlash = false;
 
-	/*int EnemyGH1 = Novice::LoadTexture("./Resource/enemy1.png");
+	int EnemyGH1 = Novice::LoadTexture("./Resource/enemy1.png");
 	int EnemyGH2 = Novice::LoadTexture("./Resource/enemy7.png");
-	int EnemyGH3 = Novice::LoadTexture("./Resource/enemy8.png");*/
 
 	// キー入力結果を受け取る箱
 	char keys[256] = { 0 };
@@ -244,6 +244,9 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int) {
 			{
 				Novice::PlayAudio(bgm, true, 0.5f);
 
+				//画像のフラグをfalseに
+				ghSlash = false;
+
 				scene = PLAY;
 			}
 
@@ -255,8 +258,15 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int) {
 
 			Novice::DrawSprite(0, 0, haikeiGH, 1.0f, 1.0f, 0.0f, WHITE);
 
-			//プレイヤー
-			Novice::DrawSprite((int)150.0f, (int)300.0f, PlayerGH1, 3.0f, 3.0f, 0.0f, WHITE);
+			//キャラクターの納刀、抜刀の描画
+			if (ghSlash == false) {
+				Novice::DrawSprite((int)150.0f, (int)300.0f, PlayerGH1, 3.0f, 3.0f, 0.0f, WHITE);
+				Novice::DrawSprite((int)600.0f, (int)300.0f, EnemyGH1, -3.0f, 3.0f, 0.0f, WHITE);
+			}
+			else if (ghSlash == true) {
+				Novice::DrawSprite((int)500.0f, (int)300.0f, PlayerGH2, 3.0f, 3.0f, 0.0f, WHITE);
+				Novice::DrawSprite((int)300.0f, (int)300.0f, EnemyGH2, -3.0f, 3.0f, 0.0f, WHITE);
+			}
 
 			if (isGameStart == true) {
 				//合図
@@ -305,10 +315,7 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int) {
 					if (preKeys[DIK_SPACE] == 0 && keys[DIK_SPACE] != 0) {
 						isSignalAppear = false;
 
-						
-						//プレイヤー
-						Novice::DrawSprite((int)500.0f, (int)300.0f, PlayerGH2, 3.0f, 3.0f, 0.0f, WHITE);
-
+						ghSlash = true;
 
 						//斬撃のSEを再生
 						Novice::PlayAudio(slashSE, false, 0.5f);
@@ -426,7 +433,6 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int) {
 				playerPressedFrame = 0;
 				//敵がキーを押したフレーム
 				enemyPressedFrame = 0;
-
 
 				scene = TITLE;
 			}
