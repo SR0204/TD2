@@ -38,6 +38,7 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int) {
 
 
 
+
 	GameDifiicult gameDifficult = normal;
 
 
