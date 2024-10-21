@@ -117,9 +117,9 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int) {
 	int PlayerGH2 = Novice::LoadTexture("./Resource/player3.png");
 
 
-	/*int EnemyGH1 = Novice::LoadTexture("./Resource/enemy1.png");
+	int EnemyGH1 = Novice::LoadTexture("./Resource/enemy1.png");
 	int EnemyGH2 = Novice::LoadTexture("./Resource/enemy7.png");
-	int EnemyGH3 = Novice::LoadTexture("./Resource/enemy8.png");*/
+	
 
 	// キー入力結果を受け取る箱
 	char keys[256] = { 0 };
@@ -255,8 +255,7 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int) {
 
 			Novice::DrawSprite(0, 0, haikeiGH, 1.0f, 1.0f, 0.0f, WHITE);
 
-			//プレイヤー
-			Novice::DrawSprite((int)150.0f, (int)300.0f, PlayerGH1, 3.0f, 3.0f, 0.0f, WHITE);
+			
 
 			if (isGameStart == true) {
 				//合図
@@ -305,8 +304,10 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int) {
 					if (preKeys[DIK_SPACE] == 0 && keys[DIK_SPACE] != 0) {
 						isSignalAppear = false;
 
-						
-						//プレイヤー
+						//プレイヤー(構え)
+						Novice::DrawSprite((int)150.0f, (int)300.0f, PlayerGH1, 3.0f, 3.0f, 0.0f, WHITE);
+
+						//プレイヤー(切り終わり)
 						Novice::DrawSprite((int)500.0f, (int)300.0f, PlayerGH2, 3.0f, 3.0f, 0.0f, WHITE);
 
 
@@ -394,9 +395,12 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int) {
 		case GAMECLEAR:
 			//Novice::DrawBox(0, 0, 750, 500, 0.0f, RED, kFillModeSolid);
 
+
 			Novice::ScreenPrintf(280, 200, "your Frame[%4d]", playerPressedFrame);
 
+
 			Novice::ScreenPrintf(280, 220, "enemy Frame[%4d]", enemyPressedFrame);
+
 
 			Novice::DrawSprite(0, 0, GameClearGH, 1.0f, 1.0f, 0.0f, WHITE);
 
