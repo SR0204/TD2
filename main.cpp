@@ -152,7 +152,7 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int) {
 				isGameStart = true;
 
 
-				//srand(currentTime);
+			
 
 				//合図が出るフレームを決定
 				signalAppearFrame = rand() % 60 + 420;
@@ -167,7 +167,7 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int) {
 			break;
 
 		case RULE:
-			//Novice::DrawBox(0, 0, 750, 500, 0.0f, BLACK, kFillModeSolid);
+			
 
 
 
@@ -283,16 +283,7 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int) {
 				}
 
 
-				//勝ち負けの判定
-				/*if (isPlayerWin == true) {
-					Novice::DrawEllipse(400, 400, 40, 40, 0.0f, RED, kFillModeSolid);
-				}
-				if (isPlayerLose == true) {
-					Novice::DrawEllipse(400, 400, 40, 40, 0.0f, BLUE, kFillModeSolid);
-				}
-				if (isPlayerDraw == true) {
-					Novice::DrawEllipse(400, 400, 40, 40, 0.0f, WHITE, kFillModeSolid);
-				}*/
+				
 			}
 
 			//ゲーム中に...
@@ -333,15 +324,7 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int) {
 
 
 
-				//プレイヤー
-				//Novice::DrawEllipse((int)PlayerPosition.x, (int)PlayerPosition.y, (int)PlayerRad, (int)PlayerRad, 0.0f, WHITE, kFillModeSolid);
-
-				
-
-				//敵
-				//Novice::DrawEllipse((int)EnemyPosition.x, (int)EnemyPosition.y, (int)EnemyRad, (int)EnemyRad, 0.0f, BLUE, kFillModeSolid);
-
-
+			
 				//フレームが最大値になったら
 				if (gameFrame == kMaxGameFrame)
 				{
@@ -384,22 +367,13 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int) {
 			}
 
 
-			/*if (gameFrame > kMaxGameFrame) {
-
-				gameFrame++;
-
-				if (gameFrame == EndGameFrame) {
-
-
-
-				}
-			}*/
+			
 
 
 
 			break;
 		case GAMECLEAR:
-			//Novice::DrawBox(0, 0, 750, 500, 0.0f, RED, kFillModeSolid);
+			
 
 
 			Novice::ScreenPrintf(280, 200, "your Frame[%4d]", playerPressedFrame);
@@ -444,7 +418,7 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int) {
 
 			break;
 		case GAMEOVER:
-			//Novice::DrawBox(0, 0, 750, 500, 0.0f, GREEN, kFillModeSolid);
+			
 
 			Novice::ScreenPrintf(280, 200, "your Frame[%4d]", playerPressedFrame);
 
@@ -494,8 +468,7 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int) {
 
 			Novice::ScreenPrintf(280, 35, "enemy Frame[%4d]", enemyPressedFrame);
 
-			//Novice::DrawBox(0, 0, 750, 500, 0.0f, BLUE, kFillModeSolid);
-
+			
 			Novice::DrawSprite(0, 0, DrawGH, 1.0f, 1.0f, 0.0f, WHITE);
 
 			if (preKeys[DIK_SPACE] == 0 && keys[DIK_SPACE] != 0)
