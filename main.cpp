@@ -174,25 +174,6 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int) {
 			Novice::DrawSprite(0, 0, (int)RuleGH, 1.0f, 1.0f, 0.0f, WHITE);
 
 
-
-
-
-			if (preKeys[DIK_SPACE] == 0 && keys[DIK_SPACE] != 0)
-			{
-
-
-				scene = RULE2;
-			}
-
-
-
-
-			break;
-
-
-
-		case RULE2:
-
 			if (preKeys[DIK_1] == 0 && keys[DIK_1] != 0) {
 
 				gameDifficult = easy;
@@ -238,6 +219,25 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int) {
 				break;
 
 			}
+
+
+			if (preKeys[DIK_SPACE] == 0 && keys[DIK_SPACE] != 0)
+			{
+
+
+				scene = RULE2;
+			}
+
+
+
+
+			break;
+
+
+
+		case RULE2:
+
+			
 
 			Novice::DrawSprite(0, 0, (int)Rule2GH, 1.0f, 1.0f, 0.0f, WHITE);
 
